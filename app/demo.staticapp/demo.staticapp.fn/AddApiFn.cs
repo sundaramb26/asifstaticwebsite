@@ -10,6 +10,8 @@ using Newtonsoft.Json;
 using System.Data.SqlClient;
 using System.Data;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Net;
 
 namespace demo.staticapp.fn
 {
@@ -24,11 +26,11 @@ namespace demo.staticapp.fn
 
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             appobject _app = Newtonsoft.Json.JsonConvert.DeserializeObject<appobject>(requestBody);
-
+            
+            _app.id = new Random().Next(0, 1000);
             InsertSql(_app, log);
-            log.LogInformation("Insert function completed");
-
-            return new OkObjectResult("saved");
+            log.LogInformation("Insert function completed");           
+            return new OkObjectResult("saved");           
         }
         private static void InsertSql(appobject _app, ILogger log)
         {
